@@ -124,7 +124,7 @@ def test_filter_removes_high_frequency_noise():
 def test_segmentation_of_gait_cycles():
     """Test the segmentation of gait cycles based on vertical GRF data."""
     
-    from utils import segment, load_data
+    from utils import segment
     grf_data = pd.read_csv('data/grf.csv')
     grf_y = grf_data['force_r_y'].values
     threshold = 60  # N
