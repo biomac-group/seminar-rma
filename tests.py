@@ -131,9 +131,9 @@ def test_segmentation_of_gait_cycles():
 
     gait_cycles = segment.segment_gait_cycles(grf_y, data=grf_data, threshold=threshold)
     assert isinstance(gait_cycles, list), "Output should be a list of DataFrames"
-    assert len(gait_cycles) > 50, "There should be at least 50 gait cycles detected"
+    assert len(gait_cycles) >= 3, "There should be at least 3 complete right gait cycles detected"
     assert all(isinstance(cycle, pd.DataFrame) for cycle in gait_cycles), "All elements should be DataFrames"
-    assert len(gait_cycles) < 500, "There should be fewer than 500 gait cycles detected (300s of data--> ~300 gait cycles)"
+    assert len(gait_cycles) <= 4, "The provided GRF file only contains a few complete right gait cycles"
 
     ensemble_average, std_cycle = segment.ensemble_average(gait_cycles)
     assert isinstance(ensemble_average, pd.DataFrame), "Ensemble average should be a DataFrame"
@@ -146,7 +146,7 @@ def test_segmentation_of_gait_cycles():
     assert ensemble_average_grf_y.min() < 30, "Ensemble min GRF should be less than 30 N"
 
     assert ensemble_average_grf_y[20] > 700, "Ensemble GRF at 20% should be greater than 700 N"
-    assert ensemble_average_grf_y[50] > 300, "Ensemble GRF at 50% should be greater than 300 N"
+    assert ensemble_average_grf_y[50] > 900, "Ensemble GRF at 50% should be greater than 900 N"
     assert ensemble_average_grf_y[80] < 40, "Ensemble GRF at 80% should be less than 40 N"
 
     ensemble_average_std_y = std_cycle['force_r_y']

@@ -1,4 +1,3 @@
-from . import rotation
 import numpy as np
 
 def forward_kinematics(q, key, kintree):
