@@ -55,6 +55,16 @@ def get_model_dictionary():
                 continue
             body_info['markers'][site_name] = _parse_vector(site.attrib.get('pos'), expected_length=3)
 
+        inertial = body.find('inertial')
+        if inertial is not None:
+            body_info['mass'] = float(inertial.attrib.get('mass', 0.0))
+            body_info['com'] = _parse_vector(inertial.attrib.get('pos'), expected_length=3)
+            body_info['inertia'] = _parse_vector(inertial.attrib.get('fullinertia'), expected_length=6)
+        else:
+            body_info['mass'] = 0.0
+            body_info['com'] = np.zeros(3, dtype=float)
+            body_info['inertia'] = np.zeros(6, dtype=float)
+
         for child in body.findall('body'):
             child_info = parse_body(child, name)
             body_info['children'][child.attrib['name']] = child_info
